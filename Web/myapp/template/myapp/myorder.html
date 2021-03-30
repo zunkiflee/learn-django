@@ -1,0 +1,69 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}	
+
+{% block content %}
+<div class="container">
+	<h3>ข้อมูลการจัดส่ง</h3>
+	<p>	
+		OrderID : {{order.orderid}}<br>
+		ชื่อผู้รับ : {{order.name}}<br>
+		เบอร์โทร : {{order.tel}}<br>
+		ที่อยู่จัดส่ง : {{order.address}}<br>
+		{% if order.shipping == 'ems' %}
+			รูปแบบการจัดส่ง : EMS
+		{% else %}
+			รูปแบบการจัดส่ง : ลงทะเบียน
+		{% endif %} <br>
+
+		{% if order.payment == 'transfer' %}
+			ชำระผ่าน : โอนเงินเข้าบัญชีธนาคาร
+		{% else %}
+			ชำระผ่าน : เก็บเงินปลายทาง
+		{% endif %} <br>
+		หมายเหตุ : {{other}} <br>	
+	</p>
+</div>
+
+	<div class="container">
+	  	<h2>ตะกร้าสินค้าของฉัน</h2>
+	  	<p>รายการสินค้าที่สั่งซื้อ</p>            
+	  	<table class="table">
+	    	<thead>
+	      	<tr>	  
+		        <th>รหัส</th>
+		        <th>สินค้า</th>
+		        <th>ราคา</th>
+		        <th>จำนวน</th>
+		        <th>รวม</th>
+	      	</tr>
+	    	</thead>
+	    <tbody>
+	  		{% for pd in odlist %}
+	    	<tr>
+		        <td>{{ pd.productid }}</td>
+		        <td>{{ pd.productname }}</td>
+		        <td>{{ pd.price|intcomma }}</td>
+		        <td>{{ pd.quantity|intcomma }}</td>
+		        <td>{{ pd.total|intcomma }}</td>
+	      	</tr>
+	     {% endfor %}
+	    	<tr>
+	    		<td><h4>Total</h4></td>	    		
+	    		<td></td>
+	    		<td></td>
+	    		<td><h4>{{count}}</h4 ></td>
+	    		<td><h4>{{total|intcomma}}</h4></td>	    		
+	    	</tr>
+
+	    </tbody>
+	  </table>
+	 		<br>
+	 		<p>ค่าส่ง: {{order.shipcost|intcomma}} บาท</p>
+	 		<h3>รวมยอดโอน: {{total|add:order.shipcost|intcomma}} บาท</h3>
+	 		<h4>โอนมาบัญชี</h4>
+	 		  <p> ธนารคาร: -----<br>
+	 		   เลขที่บัญชี: ----<br>
+	 		   ชื่อบัญชี: -------<br>
+	 		   </p>
+	</div>  
+{% endblock content %}

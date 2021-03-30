@@ -1,0 +1,18 @@
+ <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                           <a href="{% url 'about-page' %}">เกี่ยวกับเรา</a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="{% url 'contact-page' %}">ติดต่อ</a>
+                        </li>
+                        <li class="nav-item">
+                          {% if user.is_authenticated %}
+                              <a href="{% url 'addproduct-page' %}">เพิ่มสินค้า</a> 
+                          {% else %}
+                              <a href="{% url 'register-page' %}">สมัครสมาชิก</a> 
+                          {% endif %}
+                        </li> 
+                        <li class="nav-item">
+                          <a href="{% url 'allproduct-page' %}">สินค้าทั้งหมด</a> 
+                        </li>   
+                      </ul>

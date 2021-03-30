@@ -1,0 +1,97 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+ <h3>สินค้าล่าสุด</h3>
+  
+
+  <div class="container-fluid">
+    <div class="row">
+      {% for pd in product %}
+        <div class="col-sm-4">
+          <div class="card" style="width:100%">
+
+          {% if pd.image %}
+              <img class="card-img-top" src="{{ pd.image.url }}" width="400" >
+          {% elif pd.imageurl != '' %}
+              <img class="card-img-top" src="{{ pd.imageurl }}" width="400" >
+          {% else %}
+              <img class="card-img-top" src="/media/default.jpg" width="400" >
+          {% endif %}
+
+          <div class="card-body">
+          <h5 class="card-title">{{ pd.name }}</h5> 
+          <p>ราคา {{ pd.price }} บาท/{{ pd.unit }}</p>
+         
+
+          {% if pd.quantity > 0 %}
+              <p>สินค้าเหลือ: {{ pd.quantity }} {{ pd.unit }}</p>
+          {% else %}
+              <p><font color="red">สินค้าหมดกรุณาติดต่อแอดมิน</font> </p>
+          {% endif %}
+
+          {% if pd.instock == True %}
+              <a href="#" class="btn btn-primary">สั่งซื้อ</a>
+          {% else %}
+              <a href="#" class="btn btn-warning">สินค้าหมด</a>
+          {% endif %}
+          </div>
+        </div>
+              <br><br> 
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    <center><a href="{% url 'allproduct-page' %}"><h1>สินค้าทั้งหมดของเรา</h1></a></center>
+    <hr>
+  </div>
+
+
+   <h3>สินค้าชายดี (Perorder)</h3>
+   <p>Perorder ล่วงหน้า 10 วัน</p>
+  <div class="container-fluid">
+    <div class="row">
+      {% for pd in perorder %}
+        <div class="col-sm-4">
+          <div class="card" style="width:100%">
+
+          {% if pd.image %}
+              <img class="card-img-top" src="{{ pd.image.url }}" width="400" >
+          {% elif pd.imageurl != '' %}
+              <img class="card-img-top" src="{{ pd.imageurl }}" width="400" >
+          {% else %}
+              <img class="card-img-top" src="/media/default.jpg" width="400" >
+          {% endif %}
+
+          <div class="card-body">
+          <h5 class="card-title">{{ pd.name }}</h5> 
+          <p>ราคา {{ pd.price }} บาท/{{ pd.unit }}</p>
+          
+
+          {% if pd.quantity > 0 %}
+              <p>สินค้าเหลือ: {{ pd.quantity }} {{ pd.unit }}</p>
+          {% else %}
+              <p><font color="red">สินค้าหมดแล้ว Perorder</font> </p>
+          {% endif %}
+
+          {% if pd.instock == True %}
+              <a href="#" class="btn btn-primary">สั่งซื้อ</a>
+          {% else %}
+              <a href="#" class="btn btn-warning">สินค้าหมด</a>
+          {% endif %}
+          </div>
+        </div>
+              <br><br> 
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+        
+
+
+
+{% endblock content %}
+

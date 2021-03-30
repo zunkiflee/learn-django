@@ -1,0 +1,85 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+
+  <h3>สินค้าทั้งหมดในร้าน</h3>
+  <p>มีสินค้าให้เลือกมากมายเลือกชมตามสบาย</p>
+
+  <div class="container-fluid">
+    <div class="row">
+
+      {% for pd in product %}
+       
+          <div class="col-sm-4">
+            <div class="card" style="width:100%">
+
+          {% if pd.image %}
+      		    <img class="card-img-top" src="{{ pd.image.url }}" width="400">
+          {% elif pd.imageurl != '' %}
+              <img class="card-img-top" src="{{ pd.imageurl }}" width="400">
+          {% else %}
+              <img class="card-img-top" src="/media/default.jpg" width="400">
+          {% endif %}
+
+      		<div class="card-body">
+        		<h5 class="card-title">{{ pd.name }}</h5>	
+        		<p>ราคา {{ pd.price }} บาท/{{ pd.unit }}</p>
+      		
+
+            {% if pd.quantity > 0 %}
+                <p>สินค้าเหลือ: {{ pd.quantity }} {{ pd.unit }}</p>
+            {% else %}
+                <p><font color="red">สินค้าหมดกรุณาติดต่อแอดมิน</font> </p>
+            {% endif %}
+
+            {% if pd.instock == True %}
+              {% if user.is_authenticated %}   
+                  <a href="{% url 'addtocart-page' pd.id %}" class="btn btn-primary">สั่งซื้อ</a>
+              {% else %}
+                  <a href="{% url 'login' %}" class="btn btn-primary">สั่งซื้อ</a>
+            {% endif %}
+
+
+          {% else %}
+              <a href="#" class="btn btn-warning">สินค้าหมด</a>
+          {% endif %}
+      		</div>
+      	</div>
+      		      <br><br> 
+          </div>
+      {% endfor %}
+    </div>
+  </div> 
+<br>
+
+<ul class="pagination">
+
+  {% if product.has_previous and product.has_next != True%}
+    <li class="page-item"><a class="page-link" href="?page={{product.previous_page_number}}"> < </a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:-2}}">{{product.number|add:-2}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:-1}}">{{product.number|add:-1}}</a></li>
+    <li class="page-item active"><a class="page-link" href="?page={{product.number}}">{{product.number}}</a></li>
+
+  {% endif %}
+
+  {% if product.has_previous and product.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{product.previous_page_number}}"> < </a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:-1}}">{{product.number|add:-1}}</a></li>
+    <li class="page-item active"><a class="page-link" href="?page={{product.number}}">{{product.number}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:1}}">{{product.number|add:1}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.next_page_number}}"> > </a></li>
+  {% endif %}
+
+  {% if product.has_next and product.has_previous != True %}
+    <li class="page-item active"><a class="page-link" href="?page={{product.number}}">{{product.number}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:1}}">{{product.number|add:1}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.number|add:2}}">{{product.number|add:2}}</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{product.next_page_number}}"> > </a></li>
+   {% endif %}
+   
+</ul><p> หน้า {{product.number}} จาก {{product.paginator.num_pages}}</p>
+
+
+  
+{% endblock content %}

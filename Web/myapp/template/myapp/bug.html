@@ -1,0 +1,50 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+
+<div class="container">
+   <div class="row row-cols-3">
+  {% for pd in product %}
+
+   
+      <div class="col" style="width:400px">
+
+      {% if pd.image %}
+      <img class="card-img-top" src="{{ pd.image.url }}" alt="Card image" style="width:100%">
+      {% elif pd.imageurl != '' %}
+      <img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100%">
+      {% else %}
+      <img class="card-img-top" src="/media/default.jpg" alt="Card image" style="width:100%">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ pd.name }}</h5>
+        <p>ราคา {{ pd.price }} บาท/{{ pd.unit }}</p>
+        
+         {% if pd.quantity > 0 %}
+              <p>สินค้าเหลือ: {{ pd.quantity }} {{ pd.unit }}</p>
+          {% else %}
+              <p><font color="red">สินค้าหมดกรุณาติดต่อแอดมิน</font> </p>
+          {% endif %}
+
+
+          {% if pd.instock == True %}
+            {% if user.is_authenticated %}
+              <a href="{% url 'addtocart-page' pd.id %}" class="btn btn-primary">สั่งซื้อ</a>
+              {% else %}
+              <a href="{% url 'addtocart-page' pd.id %}" class="btn btn-primary">สั่งซื้อ</a>
+          {% endif %}
+
+              {% else %}
+              <a href="#" class="btn btn-warning">สินค้าหมด</a>
+        
+              {% endif %}
+      </div>
+    </div>
+
+    <br><br>
+{% endfor %}
+</div>
+</div>
+
+
+{% endblock content %}
